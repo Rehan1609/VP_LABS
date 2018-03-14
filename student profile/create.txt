@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+namespace profile
+{
+    class create
+    {
+        public void enter(string path, string studentID, string studentName, string uni, string dept, int smstr, float cgpa)
+        {
+            while (File.Exists(path) != true)
+            {
+                Console.WriteLine("File does not exists (Create file by entereing path (e.g, d:/name.txt)): ");
+                path = Console.ReadLine();
+                StreamWriter makefile = new StreamWriter(path);
+                makefile.Close();
+            }
+            Console.WriteLine("Enter unique id : ");
+            studentID = Console.ReadLine();
+            string line = "";
+            StreamReader file = new StreamReader(path);
+            while ((line = file.ReadLine()) != null)
+            {
+                if (studentID == line)
+                {
+                    Console.WriteLine("Enter unique id please : ");
+                    studentID = Console.ReadLine();
+                }
+            }
+            if (studentID != line)
+            {
+                file.Close();
+
+                Console.WriteLine("Enter your Name : ");
+                studentName = Console.ReadLine();
+
+                Console.WriteLine("Enter your University Name : ");
+                uni = Console.ReadLine();
+
+                Console.WriteLine("Enter your department name : ");
+                dept = Console.ReadLine();
+
+                Console.WriteLine("Enter your semester : ");
+                smstr = int.Parse(Console.ReadLine());
+                while (smstr > 8)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Enter correct your semester : ");
+                    smstr = int.Parse(Console.ReadLine());
+                }
+                if (smstr <= 8)
+                {
+                    Console.WriteLine("\n\n\t\tEnter your CGPA : ");
+                    cgpa = float.Parse(Console.ReadLine());
+                    while (cgpa > 4)
+                    {
+                        Console.WriteLine("\n\n\t\t\tEnter correct CGPA (below or equal to 4) : ");
+                        cgpa = float.Parse(Console.ReadLine());
+                    }
+                    if (cgpa <= 4)
+                    {
+                        StreamWriter write = File.AppendText(path);
+                        write.WriteLine(studentID);
+                        write.WriteLine(studentName);
+                        write.WriteLine(uni);
+                        write.WriteLine(dept);
+                        write.WriteLine(smstr);
+                        write.WriteLine(cgpa);
+                        write.Flush();
+                    }
+                }
+                Console.WriteLine("Data has been successfully inserted in " + path);
+            }
+        }
+    }
+}
